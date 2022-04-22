@@ -29,6 +29,9 @@ Auth::routes(['verify'=>true]);
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'middleware' => ['auth', 'admin']], function () {
 
     Route::get('/', 'HomeController@index')->name('home');
+    // Route::get('/', function(){
+    //     dd("asd");
+    // })->name('home');
     // Permissions
     Route::delete('permissions/destroy', 'PermissionsController@massDestroy')->name('permissions.massDestroy');
     Route::resource('permissions', 'PermissionsController');

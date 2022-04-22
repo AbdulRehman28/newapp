@@ -1,7 +1,12 @@
 @extends('layouts.admin')
 
 @section('content')
-
+@if(Session::has('success'))
+<p class="alert alert-success">{{ Session::get('success') }}</p>
+@endif
+@if(Session::has('error'))
+<p class="alert alert-danger">{{ Session::get('error') }}</p>
+@endif
 <div class="container-fluid">
     <div style="margin-bottom: 10px;" class="row">
         <div class="col-sm-12">
@@ -20,7 +25,8 @@
                 <thead>
                     <tr>
                         <th>Id</th>
-                        <th>Name</th>
+                        <th>Category</th>
+                        <th>Sub Category</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -30,8 +36,6 @@
     </div>
 
 </div>
-
-
 @endsection
 @section('scripts')
 
@@ -47,6 +51,7 @@
 
         columns: [
             {data: 'id', name: 'id'},
+            {data: 'category_id', name: 'category_id'},
             {data: 'name', name: 'name'},
             {data: 'action', name: 'action', orderable: false, searchable: false},
         ],

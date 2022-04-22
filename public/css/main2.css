@@ -1012,7 +1012,7 @@ svg.body-part {left: 516px;}
     margin-bottom: 15px;
 }
 
-SELECT {
+.SELECT {
     background: url("/images/arrow.png") no-repeat;
 
     background-position: calc(100% - 0.75rem) center !important;

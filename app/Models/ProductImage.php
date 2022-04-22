@@ -1,29 +1,32 @@
 <?php
-namespace App\Models;
 
-use \DateTimeInterface;
+namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Language extends Model
+
+class ProductImage extends Model
 {
     use HasFactory;
-
-    public $table = 'languages';
+    public $table = 'product_images';
 
     protected $dates = [
         'created_at',
         'updated_at',
-        'deleted_at',
+
     ];
 
     protected $fillable = [
-
-        'language',
+        'id',
+        'name',
+        'product_id',
         'created_at',
         'updated_at',
-        'deleted_at',
 
     ];
+
+    // public function subCategory(){
+
+    //     return $this->belongsTo(SubCategory::class,'sub_category_id');
+    // }
 }

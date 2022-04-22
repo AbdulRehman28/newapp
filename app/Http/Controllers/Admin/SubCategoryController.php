@@ -27,7 +27,7 @@ class SubCategoryController extends Controller
 
         if ($request->ajax()) {
 
-            $data = SubCategory::select('*');
+            $data = SubCategory::with('category')->select('*');
             return Datatables::of($data)
 
                     ->addColumn('action', function($row){
@@ -45,10 +45,10 @@ class SubCategoryController extends Controller
                             </form>';
                             return $btn;
                     })
-                    // ->editColumn('category_id',function($row){
-                    //     return $row->
-                    // })
-                    ->rawColumns(['action'])
+                    ->editColumn('category_id',function($row){
+                        return $row->category->name;
+                    })
+                    ->rawColumns(['action','category_id'])
                     ->make(true);
 
     }
@@ -131,10 +131,10 @@ class SubCategoryController extends Controller
             if($validator->fails()){
                 return redirect()->back()->withErrors($validator)->withInput();
             }
-            return view('admin.sub_category.index');
+            return redirect()->route('admin.sub-categories.index')->with('success','Sub Category Updated Successfully');
         }
         catch(\Exception $e){
-
+            dd($e);
           return redirect()->back();
         }
 
@@ -148,9 +148,20 @@ class SubCategoryController extends Controller
      */
     public function destroy(SubCategory $sub_category)
     {
-        $sub_category->delete();
+        try{
+            $product = Product::where('sub_category_id',$sub_category->id)->get();
+            if($product->isEmpty()){
+                $sub_category->delete();
+                return redirect()->route('admin.sub-categories.index');
+            }
+            else{
+                return redirect()->back()->with('error','This Sub Category contains products, It cannot be deleted.');
+            }
+        }
+        catch(\Exception $e){
+            return redirect()->back();
+        }
 
-        return redirect()->route('admin.sub-categories.index');
 
     }
 }
