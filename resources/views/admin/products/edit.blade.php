@@ -40,21 +40,21 @@
                 <div class="col-sm-6">
                     <div class="form-group">
                         <label class="required" for="stock">Stock</label>
-                        <input type="number" value="{{ old('name', $product->stock) }}" id="stock"
+                        <input type="number" name="stock" value="{{ old('stock', $product->stock) }}" id="stock"
                         class="form-control {{ $errors->has('price') ? 'is-invalid' : '' }}">
                     </div>
                 </div>
                 <div class="col-sm-6">
                     <div class="form-group">
                         <label class="required" for="price">Price</label>
-                        <input type="number" name="stock" value="{{old('price', $product->price)}}" id="price" class="form-control {{ $errors->has('price') ? 'is-invalid' : '' }}" required>
+                        <input type="number" name="price" value="{{old('price', $product->price)}}" id="price" class="form-control {{ $errors->has('price') ? 'is-invalid' : '' }}" required>
                     </div>
                 </div>
             </div>
             <div class="form-group">
                 <label><strong>Description :</strong></label>
                 <textarea class="form-control" id="summary-ckeditor" name="description"
-                value="{{old('description' , $product->description)}}"></textarea>
+                value="{{old('description' , $product->description)}}">{{old('description' , $product->description)}}</textarea>
               </div>
             <div class="upload__btn-box edit-upload">
                 <label class="upload__btn edit-upload-img">
@@ -134,7 +134,7 @@ function ImgUpload() {
       });
     });
   });
-
+  let deleted_files = [];
   $('body').on('click', ".upload__img-close", function (e) {
         $('.edit-upload-img').show();
         var a= $(this).parent().find("img").attr("id");
@@ -143,7 +143,9 @@ function ImgUpload() {
         var file = $(this).parent().data("file");
         for (var i = 0; i < imgArray.length; i++) {
             if (imgArray[i].name === file) {
+                deleted_files.push(imgArray[i].name);
                 imgArray.splice(i, 1);
+                $('#images').val(deleted_files);
                 break;
             }
         }

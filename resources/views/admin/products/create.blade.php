@@ -44,13 +44,13 @@
               <div class="col-sm-6">
                 <div class="form-group">
                   <label class="required" for="price">Price</label>
-                  <input type="number" name="price" value="" id="price" class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" >
+                  <input type="number" name="price" value="{{ old('price', '') }}" id="price" class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" >
                 </div>
               </div>
               <div class="col-sm-6">
                 <div class="form-group">
                   <label class="required" for="stock">Stock</label>
-                  <input type="number" name="stock" value="" id="stock" class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" >
+                  <input type="number" name="stock" value="{{ old('stock', '') }}" id="stock" class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" >
                 </div>
               </div>
             </div>
@@ -74,7 +74,7 @@
                   {{ trans('global.save') }}
               </button>
           </div>
-          <input type="hidden" name="images[]" value="" id="images">
+          <input type="hidden" name="delete_images[]" value="" id="images">
         </form>
     </div>
 </div>
@@ -118,7 +118,7 @@ function ImgUpload() {
       filesArr.forEach(function (f, index) {
 
         if (!f.type.match('image.*')) {
-            alert("sdf")
+           
           return;
         }
 
@@ -148,12 +148,16 @@ function ImgUpload() {
       });
     });
   });
-
+  let deleted_files = [];
   $('body').on('click', ".upload__img-close", function (e) {
     var file = $(this).parent().data("file");
     for (var i = 0; i < imgArray.length; i++) {
       if (imgArray[i].name === file) {
+        
+        deleted_files.push(imgArray[i].name);
         imgArray.splice(i, 1);
+        
+        $('#images').val(deleted_files);
         break;
       }
     }

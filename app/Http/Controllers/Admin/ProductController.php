@@ -69,30 +69,45 @@ class ProductController extends Controller
             'image.*' => 'image|mimes:jpg,jpeg,png'
         ]);
         if($validator->fails()){
+            
             return redirect()->back()->withErrors($validator)->withInput();
         }
         try{
+           
             $product = Product::create($request->all());
-
+            
             if($request->hasFile('image')){
-                foreach($request->file('image') as $image){
+                $has_deleted_image = false;
+                foreach($request->file('image') as $key => $image){
                     $name = $image->getClientOriginalName();
-                    $image->move(storage_path().'/app/public/uploads/product_images/',$name);
-                    $data[] = $name;
+                    if(isset($request->delete_images)){
+                        
+                        foreach($request->delete_images as $dimage){
+                            if($name == $dimage){
+                                $has_deleted_image = true;
+                            }
+                        }
+                        
+                    }
+                    if(!$has_deleted_image){
+                        $image->move(storage_path().'/app/public/uploads/product_images/',$name);
+                        $product_image = new ProductImage();
+                        $product_image->product_id = $product->id;
+                        $product_image->image_path = $name;
+                        $product_image->save();
+                    }
+     
+                    $has_deleted_image = false;
+                    
                 }
-                foreach($data as $data){
-                    $product_image = new ProductImage();
-                    $product_image->product_id = $product->id;
-                    $product_image->image_path = $data;
-                    $product_image->save();
-                }
+                
             }
 
             return redirect()->route('admin.products.index')->with('success', 'Product added successfully');
         }
 
         catch(\Exception $e){
-
+           
            return redirect()->back();
         }
 
@@ -137,19 +152,32 @@ class ProductController extends Controller
            Product::where('id',$id)->update($request->except(['_token', '_method','deleted_images','image' ]));
 
            if($request->hasFile('image')){
-            foreach($request->file('image') as $image){
-                $name = $image->getClientOriginalName();
-                $image->move(storage_path().'/app/public/uploads/product_images/',$name);
-                $data[] = $name;
+                $has_deleted_image = false;
+                foreach($request->file('image') as $key => $image){
+                    $name = $image->getClientOriginalName();
+                    if(isset($request->delete_images)){
+                        
+                        foreach($request->delete_images as $dimage){
+                            if($name == $dimage){
+                                $has_deleted_image = true;
+                            }
+                        }
+                        
+                    }
+                    if(!$has_deleted_image){
+                        $image->move(storage_path().'/app/public/uploads/product_images/',$name);
+                        $product_image = new ProductImage();
+                        $product_image->product_id = $product->id;
+                        $product_image->image_path = $name;
+                        $product_image->save();
+                    }
+    
+                    $has_deleted_image = false;
+                    
+                }
+            
             }
-
-            foreach($data as $data){
-                $product_image = new ProductImage();
-                $product_image->product_id = $id;
-                $product_image->image_path = $data;
-                $product_image->save();
-            }
-        }
+        
 
         return redirect()->route('admin.products.index')->with('success', 'Product updated successfully');
 
