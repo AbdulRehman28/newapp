@@ -24,6 +24,8 @@
                         <th>Id</th>
                         <th>Sub Category</th>
                         <th>Product Name</th>
+                        <th>Stock</th>
+                        <th>Description</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -31,10 +33,7 @@
           </div>
       </div>
     </div>
-
 </div>
-
-
 @endsection
 @section('scripts')
 
@@ -50,11 +49,21 @@
 
         columns: [
             {data: 'id', name: 'id'},
-            {data: 'sub_category', name: 'sub_category.name'},
+            {data: 'sub_category', name: 'sub_category'},
             {data: 'name', name: 'name'},
+            {data: 'stock', name: 'stock'},
+            // {data: 'description', name: 'description'},
+            {
+                data: "description",
+                name: "description",
+                defaultContent: "-",
+                render: function(data, type, row)
+                {
+                    return  '<div style="width:80%">' + $('<div/>').html(data).text() + '</div>';
+                }
+            },
             {data: 'action', name: 'action', orderable: false, searchable: false},
         ],
-
     });
 
   });

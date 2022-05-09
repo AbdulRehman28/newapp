@@ -35,9 +35,7 @@ class ProductController extends Controller
                            <form method="POST" id="delete-sub-category' . $row->id . '"
                             action="' .route('admin.products.destroy', $row->id) . '">
                             <input type="hidden" name="_token" value="' . csrf_token() . '"/>
-
                             <input type="hidden" name="_method" value="delete"/>
-
                             </form>';
                             return $btn;
                     })
@@ -47,7 +45,7 @@ class ProductController extends Controller
                     ->rawColumns(['action','sub_category'])
                     ->make(true);
 
-    }
+        }
 
         return view('admin.products.index');
 
@@ -66,6 +64,7 @@ class ProductController extends Controller
 
         $validator = Validator::make($request->all(),[
             'name'=>'required|unique:products,name',
+            'stock'=> 'required|min:1',
             'image' => 'required',
             'image.*' => 'image|mimes:jpg,jpeg,png'
         ]);
@@ -117,6 +116,7 @@ class ProductController extends Controller
                 'required',
                 Rule::unique('products')->ignore($id),
             ],
+            'stock'=> 'required|min:1'
         ]);
         if($validator->fails()){
 

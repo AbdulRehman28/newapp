@@ -134,8 +134,7 @@ class SubCategoryController extends Controller
             return redirect()->route('admin.sub-categories.index')->with('success','Sub Category Updated Successfully');
         }
         catch(\Exception $e){
-            dd($e);
-          return redirect()->back();
+          return redirect()->back()->with('errors',$e);
         }
 
     }

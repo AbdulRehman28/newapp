@@ -1,9 +1,10 @@
 <div class="side-bar-main">
     <aside class="main-sidebar sidebar-dark-primary elevation-4" style="min-height: 917px;">
         <!-- Brand Logo -->
-        <a href="{{route('home')}}" class="brand-link">
+        <a href="{{route('home')}}" class="brand-link logo">
             {{-- <span class="brand-text font-weight-light">{{ trans('panel.site_title') }}</span> --}}
-            <img class="brand-text font-weight-light site-logo" src="{{asset('images/c-logo.png')}}" alt="not found">
+            {{-- <img class="brand-text font-weight-light site-logo" src="{{asset('images/c-logo.png')}}" alt="not found"> --}}
+            App
         </a>
 
         <!-- Sidebar -->
@@ -23,6 +24,53 @@
                         </a>
                     </li>
                     @can('user_management_access')
+                    <li class="nav-item has-treeview {{ request()->is("admin/permissions*") ? "menu-open" : "" }} {{ request()->is("admin/roles*") ? "menu-open" : "" }} {{ request()->is("admin/users*") ? "menu-open" : "" }}">
+                        <a class="nav-link nav-dropdown-toggle" href="#">
+                            <i class="fa-fw nav-icon fas fa-users">
+                            </i>
+                            <p>
+                                User Management
+                                <i class="right fa fa-fw fa-angle-left nav-icon"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            @can('role_access')
+                                <li class="nav-item">
+                                    <a href="{{ route("admin.roles.index") }}" class="nav-link {{ request()->is("admin/roles") || request()->is("admin/roles/*") ? "active" : "" }}">
+                                        <i class="fa-fw nav-icon fas fa-briefcase">
+                                        </i>
+                                        <p>
+                                            {{ trans('cruds.role.title') }}
+                                        </p>
+                                    </a>
+                                </li>
+                            @endcan
+                            @can('user_access')
+                                <li class="nav-item">
+                                    <a href="{{ route("admin.users.index") }}" class="nav-link {{ request()->is("admin/users") || request()->is("admin/users/*") ? "active" : "" }}">
+                                        <i class="fa-fw nav-icon fas fa-user">
+
+                                        </i>
+                                        <p>
+                                            {{ trans('cruds.user.title') }}
+                                        </p>
+                                    </a>
+                                </li>
+                            @endcan
+                            @can('rider_access')
+                                <li class="nav-item">
+                                    <a href="{{ route("admin.riders.index") }}" class="nav-link {{ request()->is("admin/riders") || request()->is("admin/riders/*") ? "active" : "" }}">
+                                        <i class="fa-fw nav-icon fas fa-briefcase">
+                                        </i>
+                                        <p>
+                                            Riders
+                                        </p>
+                                    </a>
+                                </li>
+                            @endcan
+                        </ul>
+                    @endcan
+                    @can('product_management_access')
                         <li class="nav-item has-treeview {{ request()->is("admin/categories*") ? "menu-open" : "" }} {{ request()->is("admin/sub-categories*") ? "menu-open" : "" }} {{ request()->is("admin/products*") ? "menu-open" : "" }}">
                             <a class="nav-link nav-dropdown-toggle" href="#">
                                 <i class="fa-fw nav-icon fas fa-users">

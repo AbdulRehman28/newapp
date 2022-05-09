@@ -3,13 +3,12 @@
 
 <div class="card">
     <div class="card-header">
-        {{ trans('global.show') }} {{ trans('cruds.user.title') }}
+        Riders
     </div>
-
     <div class="card-body">
         <div class="form-group">
             <div class="form-group">
-                <a class="btn btn-default" href="{{ route('admin.users.index') }}">
+                <a class="btn btn-default" href="{{ route('admin.riders.index') }}">
                     {{ trans('global.back_to_list') }}
                 </a>
             </div>
@@ -60,7 +59,7 @@
                 </tbody>
             </table>
             <div class="form-group">
-                <a class="btn btn-default" href="{{ route('admin.users.index') }}">
+                <a class="btn btn-default" href="{{ route('admin.riders.index') }}">
                     {{ trans('global.back_to_list') }}
                 </a>
             </div>

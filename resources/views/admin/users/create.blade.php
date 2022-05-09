@@ -1,29 +1,21 @@
 @extends('layouts.admin')
 @section('content')
-
+@if($errors->any())
+<p class="alert alert-danger"> {{$errors->first()}}</p>
+@endif
 <div class="card">
     <div class="card-header">
         {{ trans('global.create') }} {{ trans('cruds.user.title_singular') }}
     </div>
-
     <div class="card-body">
         <form method="POST" action="{{ route("admin.users.store") }}" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
-                <label class="required" for="first_name">First Name</label>
-                <input class="form-control {{ $errors->has('first_name') ? 'is-invalid' : '' }}" type="text" name="first_name" id="first_name" value="{{ old('first_name', '') }}" required>
-                @if($errors->has('first_name'))
-                    <span class="text-danger">{{ $errors->first('first_name') }}</span>
+                <label class="required" for="name">Name</label>
+                <input class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" type="text" name="name" id="name" value="{{ old('name', '') }}" required>
+                @if($errors->has('name'))
+                    <span class="text-danger">{{ $errors->first('name') }}</span>
                 @endif
-                <span class="help-block">{{ trans('cruds.user.fields.name_helper') }}</span>
-            </div>
-            <div class="form-group">
-                <label class="required" for="last_name">Last Name</label>
-                <input class="form-control {{ $errors->has('last_name') ? 'is-invalid' : '' }}" type="text" name="last_name" id="last_name" value="{{ old('last_name', '') }}" required>
-                @if($errors->has('last_name'))
-                    <span class="text-danger">{{ $errors->first('last_name') }}</span>
-                @endif
-                <span class="help-block">{{ trans('cruds.user.fields.name_helper') }}</span>
             </div>
             <div class="form-group">
                 <label class="required" for="email">{{ trans('cruds.user.fields.email') }}</label>
@@ -47,7 +39,7 @@
                     <span class="btn btn-info btn-xs select-all" style="border-radius: 0">{{ trans('global.select_all') }}</span>
                     <span class="btn btn-info btn-xs deselect-all" style="border-radius: 0">{{ trans('global.deselect_all') }}</span>
                 </div>
-                <select class="form-control select2 {{ $errors->has('roles') ? 'is-invalid' : '' }}" name="roles[]" id="roles" multiple required>
+                <select class="form-control select2 {{ $errors->has('roles') ? 'is-invalid' : '' }}" name="roles[]" id="roles"  required>
                     @foreach($roles as $id => $role)
                         <option value="{{ $id }}" {{ in_array($id, old('roles', [])) ? 'selected' : '' }}>{{ $role }}</option>
                     @endforeach

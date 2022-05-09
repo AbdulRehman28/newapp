@@ -3,7 +3,7 @@
 
 <div class="card">
     <div class="card-header">
-       Create NewsPaper Details
+       Edit Sub Category
     </div>
     <div class="card-body">
         <form method="POST" action="{{ route("admin.sub-categories.update", [$sub_category->id]) }}" enctype="multipart/form-data">
@@ -13,7 +13,7 @@
                 <label class="required" for="category_id">Category</label>
                 <select class="form-control select2 {{ $errors->has('category_id') ? 'is-invalid' : '' }}" name="category_id" id="category_id" required>
                     @foreach($categories as $id => $entry)
-                        <option value="{{ $entry->id }}" {{ old('category_id') == $entry->id ? 'selected' : '' }}>{{ $entry->name }}</option>
+                        <option value="{{ $entry->id }}" {{ old('category_id') == $entry->id ? 'selected' : '' }} {{ ($sub_category->category->id == $entry->id) ? 'selected':''}}>{{ $entry->name }}</option>
                     @endforeach
                 </select>
                 @if($errors->has('category_id'))

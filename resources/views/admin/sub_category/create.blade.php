@@ -10,7 +10,7 @@
         <form method="POST" action="{{ route("admin.sub-categories.store") }}" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
-                <label class="required" for="category_id">News Paper</label>
+                <label class="required" for="category_id">Category</label>
                 <select class="form-control select2 {{ $errors->has('category_id') ? 'is-invalid' : '' }}" name="category_id" id="category_id" required>
                     @foreach($categories as $id => $entry)
                         <option value="{{ $entry->id }}" {{ old('category_id') == $entry->id ? 'selected' : '' }}>{{ $entry->name }}</option>

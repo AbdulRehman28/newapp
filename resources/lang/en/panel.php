@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'site_title' => 'Cipdar',
+    'site_title' => 'App',
 ];

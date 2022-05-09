@@ -17,14 +17,14 @@ class RolesController extends Controller
 {
     public function index(Request $request)
     {
-       
+
         abort_if(Gate::denies('role_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         if ($request->ajax()) {
-            
+
             $data = Role::with('permissions')->select('*');
             return Datatables::of($data)
-      
+
                     ->addColumn('checkbox',function($row){
 
                         $checkbox='<input type="checkbox" id="'.$row->id.'" name="checkbox[]" value="'.$row->id.'" class="c" />';
@@ -36,29 +36,29 @@ class RolesController extends Controller
                         return $title;
                     })
                     ->addColumn('permission',function($row){
-                       
+
                          $array='';
                             foreach($row->permissions as $permission){
-                                
+
                                 $array .= '<span class="badge badge-info ml-1" width="50px">'.$permission->title.'</span>';
-                                
+
                             }
                             return $array;
-                        
+
                     })
-                  
+
                     ->addColumn('action', function($row){
-     
+
                            $btn = '<a href="'.route('admin.roles.edit',$row->id).'" class="btn btn-info btn-sm"><i class="fa fa-edit"></i></a>
                            <a href="javascript:void(0);" id="delete" data-form-id="' . $row->id . '" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>
-                           
-                           <form method="POST" id="delete-users' . $row->id . '" 
+
+                           <form method="POST" id="delete-users' . $row->id . '"
                            action="' .route('admin.roles.destroy', $row->id) . '">
 
                            <input type="hidden" name="_token" value="' . csrf_token() . '"/>
-       
+
                            <input type="hidden" name="_method" value="delete"/>
-       
+
                        </form>';
                             return $btn;
                     })
@@ -116,7 +116,7 @@ class RolesController extends Controller
 
     public function destroy(Role $role)
     {
-       
+
         abort_if(Gate::denies('role_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $role->delete();

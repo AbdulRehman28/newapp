@@ -13,29 +13,52 @@
                 <p class="alert alert-danger">{{$error}}</p>
             @endforeach
         @endif
-        <form method="POST" action="{{ route("admin.products.store") }}" enctype="multipart/form-data">
+        <form method="POST" action="{{ route("admin.products.store") }}" enctype="multipart/form-data" id="form">
             @csrf
-            <div class="form-group">
-                <label class="required" for="sub_category_id">Sub Category</label>
-                <select class="form-control select2 {{ $errors->has('sub_category_id') ? 'is-invalid' : '' }}" name="sub_category_id" id="sub_category_id" required>
-                    <option value="">Select</option>
-                    @foreach($sub_categories as $id => $entry)
-                        <option value="{{ $entry->id }}" {{ old('sub_category_id') == $entry->id ? 'selected' : '' }}>{{ $entry->name }}</option>
-                    @endforeach
-                </select>
-                @if($errors->has('sub_category_id'))
-                    <span class="text-danger">{{ $errors->first('sub_category_id') }}</span>
-                @endif
+            <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="required" for="sub_category_id">Sub Category</label>
+                    <select class="form-control select2 {{ $errors->has('sub_category_id') ? 'is-invalid' : '' }}" name="sub_category_id" id="sub_category_id" >
+                        <option value="">Select</option>
+                        @foreach($sub_categories as $id => $entry)
+                            <option value="{{ $entry->id }}" {{ old('sub_category_id') == $entry->id ? 'selected' : '' }}>{{ $entry->name }}</option>
+                        @endforeach
+                    </select>
+                    @if($errors->has('sub_category_id'))
+                        <span class="text-danger">{{ $errors->first('sub_category_id') }}</span>
+                    @endif
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                      <label class="required" for="name">Name</label>
+                      <input class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" type="text" name="name" id="page_no" value="{{ old('name', '') }}" >
+                      @if($errors->has('name'))
+                          <span class="text-danger">{{ $errors->first('name') }}</span>
+                      @endif
+                  </div>
+                </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="required" for="price">Price</label>
+                  <input type="number" name="price" value="" id="price" class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" >
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="required" for="stock">Stock</label>
+                  <input type="number" name="stock" value="" id="stock" class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" >
+                </div>
+              </div>
             </div>
             <div class="form-group">
-                <label class="required" for="name">Name</label>
-                <input class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" type="text" name="name" id="page_no" value="{{ old('name', '') }}" >
-                @if($errors->has('name'))
-                    <span class="text-danger">{{ $errors->first('name') }}</span>
-                @endif
+              <label><strong>Description :</strong></label>
+              <textarea class="form-control" id="summary-ckeditor" name="description"></textarea>
             </div>
-            <div>
-                <div class="upload__box">
+            <div class="upload__box">
                     <div class="row">
                         <div class="upload__btn-box">
                             <label class="upload__btn">
@@ -45,27 +68,44 @@
                         </div>
                     </div>
                     <div class="upload__img-wrap"></div>
-                  </div>
             </div>
             <div class="form-group">
-                <button class="btn btn-danger" type="submit">
-                    {{ trans('global.save') }}
-                </button>
-            </div>
+              <button class="btn btn-danger" type="submit">
+                  {{ trans('global.save') }}
+              </button>
+          </div>
+          <input type="hidden" name="images[]" value="" id="images">
         </form>
     </div>
 </div>
-
 @endsection
 @section('scripts')
 <script>
    jQuery(document).ready(function () {
   ImgUpload();
+    $('#form').on('submit',function(e){
+        e.preventDefault();
+        var formData = new FormData(this);
+        var array = $("[name='images[]']");
+        for (var i = 0; i < imgArray.length; i++) {
+            formData.append(array, imgArray [i]);
+        }
+        // $('#images').append(imgArray)
+        //
+        // formData = new FormData;
+        // words = imgArray;
+        // words = ["apple", "ball", "cat"]
+        // words.forEach((item) => formData.append("words[]", item))
+        // verify the data
+        // console.log(formData.getAll("words[]"))
+        $('#form')[0].submit();
+    })
 });
+var imgArray = [];
 
 function ImgUpload() {
   var imgWrap = "";
-  var imgArray = [];
+
 
   $('.upload__inputfile').each(function () {
     $(this).on('change', function (e) {
@@ -78,6 +118,7 @@ function ImgUpload() {
       filesArr.forEach(function (f, index) {
 
         if (!f.type.match('image.*')) {
+            alert("sdf")
           return;
         }
 
@@ -119,5 +160,6 @@ function ImgUpload() {
     $(this).parent().parent().remove();
   });
 }
+
 </script>
 @endsection
